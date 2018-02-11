@@ -238,7 +238,8 @@ image **load_alphabet()
 void draw_detections(image im, int num, float thresh, box *boxes, float **probs, float **masks, char **names, image **alphabet, int classes)
 {
     int i,j;
-
+    //this is the file we'll be writing our box locations to
+    printf("LABELS : BEGIN");
     for(i = 0; i < num; ++i){
         char labelstr[4096] = {0};
         int class = -1;
@@ -258,11 +259,11 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
             int width = im.h * .006;
 
             /*
-               if(0){
-               width = pow(prob, 1./2.)*10+1;
-               alphabet = 0;
-               }
-             */
+            if(0){
+            width = pow(prob, 1./2.)*10+1;
+            alphabet = 0;
+            }
+            */
 
             //printf("%d %s: %.0f%%\n", i, names[class], prob*100);
             int offset = class*123457 % classes;
@@ -288,6 +289,7 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
             if(top < 0) top = 0;
             if(bot > im.h-1) bot = im.h-1;
 
+            printf("%d\t%d\t%d\t%d\t\t%s",left,top,right,bot,labelstr);
             draw_box_width(im, left, top, right, bot, width, red, green, blue);
             if (alphabet) {
                 image label = get_label(alphabet, labelstr, (im.h*.03)/10);
